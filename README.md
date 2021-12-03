@@ -1,4 +1,4 @@
-# super-generator
+# Super Generator
 
 ## How To Use
 
