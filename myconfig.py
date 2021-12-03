@@ -1,3 +1,4 @@
+# custom parameters
 out_dir = "."
 group_id = "com.github.blog"
 name = "myblog"
@@ -6,7 +7,13 @@ mysql = {
     "database": "myblog",
     "username": "root",
     "password": "123456",
+    # tables need to generate api
     "tableNames": ["cms_article", "cms_comment", "cms_leave_message"],
+    # data type of id which is usually the first column
     "idTypes": ["Integer", "Long", "Integer"]
 }
+# don't care
 temp_group_id = "com.macro.mall"
+JAVA_MAIN = ["src", "main", "java"]
+template = "mytemplate"
+run = True

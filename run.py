@@ -19,8 +19,7 @@ def split_table_name(full_table_name):
     table_name = full_table_name.split("_")[1:]
     return (table_type, table_type[0].upper()+table_type[1:], table_name[0]+"".join([name[0].upper()+name[1:] for name in table_name[1:]]), "".join([name[0].upper()+name[1:] for name in table_name]))
 
-JAVA_MAIN = ["src", "main", "java"]
-template_dir = Path("mytemplate")
+template_dir = Path(template)
 sub_dirs = group_id.split(".")
 temp_sub_dirs = temp_group_id.split(".")
 out_dir = Path(out_dir)
@@ -113,6 +112,7 @@ for package in ["common", "config"]:
 shutil.copy(str(template_dir.joinpath(*JAVA_MAIN, *temp_sub_dirs, "tiny", "MyApp.java")), str(out_dir.joinpath(name, *JAVA_MAIN, *sub_dirs, "tiny")))
 change_package(out_dir.joinpath(name, *JAVA_MAIN, *sub_dirs, "tiny", "MyApp.java"))
 # Run
-cmd("cd %s && mvn package"%(str(out_dir.joinpath(name))))
-cmd("cd %s && java -jar target/%s-0.0.1-SNAPSHOT.jar"%(str(out_dir.joinpath(name)), name))
+if run:
+    cmd("cd %s && mvn package"%(str(out_dir.joinpath(name))))
+    cmd("cd %s && java -jar target/%s-0.0.1-SNAPSHOT.jar"%(str(out_dir.joinpath(name)), name))
 print("finished.")
