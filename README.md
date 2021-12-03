@@ -2,9 +2,12 @@
 
 ## How To Use
 
+- `git clone https://github.com/castleKing1997/super-generator`
+- `cd super-generator`
+
 - Change parameter in  `myconfig.py`
 
-- Run `run.py`
+- `python run.py`
 
 ## Future Plan
 
