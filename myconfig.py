@@ -8,9 +8,9 @@ mysql = {
     "username": "root",
     "password": "123456",
     # tables need to generate api
-    "tableNames": ["cms_article", "cms_comment", "cms_leave_message"],
+    "tableNames": ["cms_article", "cms_comment", "cms_leave_message", "ums_user"],
     # data type of id which is usually the first column
-    "idTypes": ["Integer", "Long", "Integer"]
+    "idTypes": ["Integer", "Long", "Integer", "Integer"]
 }
 # don't care
 temp_group_id = "com.macro.mall"
