@@ -1,5 +1,10 @@
 # Super Generator
 
+python=3.8.11
+
+- numpy==1.21.1
+- pandas==1.3.2
+
 ## How To Use
 
 - `git clone https://github.com/castleKing1997/super-generator`
