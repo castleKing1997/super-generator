@@ -22,6 +22,7 @@ import java.util.List;
  * Created by macro on 2019/4/19.
  */
 @Api(tags = "PmsBrandController")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 @RequestMapping("/brand")
 public class PmsBrandController {
