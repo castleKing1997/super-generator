@@ -2,6 +2,7 @@ package com.macro.mall.tiny.service;
 
 
 import com.macro.mall.tiny.mbg.model.PmsBrand;
+import com.macro.mall.tiny.mbg.model.PmsBrandExample;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface PmsBrandService {
     List<PmsBrand> listBrand(int pageNum, int pageSize);
 
     PmsBrand getBrand(Long id);
+
+    List<PmsBrand> getBrandByExample(PmsBrandExample pmsBrandExample);
 }

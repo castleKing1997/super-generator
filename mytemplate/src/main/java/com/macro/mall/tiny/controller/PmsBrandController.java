@@ -3,6 +3,7 @@ package com.macro.mall.tiny.controller;
 import com.macro.mall.tiny.common.api.CommonPage;
 import com.macro.mall.tiny.common.api.CommonResult;
 import com.macro.mall.tiny.mbg.model.PmsBrand;
+import com.macro.mall.tiny.mbg.model.PmsBrandExample;
 import com.macro.mall.tiny.service.PmsBrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
-
 
 /**
  * brand管理Controller
@@ -57,7 +59,8 @@ public class PmsBrandController {
     @ApiOperation("更新指定id的brand信息")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult updateBrand(@PathVariable("id") Long id, @RequestBody PmsBrand pmsBrandDto, BindingResult result) {
+    public CommonResult updateBrand(@PathVariable("id") Long id, @RequestBody PmsBrand pmsBrandDto,
+            BindingResult result) {
         CommonResult commonResult;
         int count = brandService.updateBrand(id, pmsBrandDto);
         if (count == 1) {
@@ -87,10 +90,9 @@ public class PmsBrandController {
     @ApiOperation("分页查询brand列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<CommonPage<PmsBrand>> listBrand(@RequestParam(value = "pageNum", defaultValue = "1")
-                                                        @ApiParam("页码") Integer pageNum,
-                                                        @RequestParam(value = "pageSize", defaultValue = "3")
-                                                        @ApiParam("每页数量") Integer pageSize) {
+    public CommonResult<CommonPage<PmsBrand>> listBrand(
+            @RequestParam(value = "pageNum", defaultValue = "1") @ApiParam("页码") Integer pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "3") @ApiParam("每页数量") Integer pageSize) {
         List<PmsBrand> brandList = brandService.listBrand(pageNum, pageSize);
         return CommonResult.success(CommonPage.restPage(brandList));
     }
@@ -100,5 +102,30 @@ public class PmsBrandController {
     @ResponseBody
     public CommonResult<PmsBrand> brand(@PathVariable("id") Long id) {
         return CommonResult.success(brandService.getBrand(id));
+    }
+
+    @ApiOperation("根据样例获取brand")
+    @RequestMapping(value = "/exp", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<List<PmsBrand>> getBrandByExample(@RequestBody PmsBrand pmsBrand)
+            throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        PmsBrandExample pmsBrandExample = new PmsBrandExample();
+        PmsBrandExample.Criteria criteria = pmsBrandExample.createCriteria();
+        Class pmsBrandClazz = PmsBrand.class;
+        Class criteriaClazz = criteria.getClass();
+        Method[] methods = pmsBrandClazz.getDeclaredMethods();
+        for (Method method : methods) {
+            String methodName = method.getName();
+            if (methodName.contains("get")) {
+                String fieldName = methodName.substring(3);
+                Object fieldValue = method.invoke(pmsBrand, null);
+                Class valueClazz = method.getReturnType();
+                if (fieldValue != null) {
+                    Method criteriaMethod = criteriaClazz.getDeclaredMethod("and" + fieldName + "EqualTo", valueClazz);
+                    criteriaMethod.invoke(criteria, fieldValue);
+                }
+            }
+        }
+        return CommonResult.success(brandService.getBrandByExample(pmsBrandExample));
     }
 }

@@ -3,9 +3,9 @@ out_dir = ".."
 group_id = "com.demo.serve"
 name = "demo-serve"
 mysql = {
-    "url": "10.254.4.24",
+    "url": "127.0.0.1",
     "database": "myblog",
-    "port": "17428",
+    "port": "3306",
     "username": "root",
     "password": "123456",
     # tables need to generate api
